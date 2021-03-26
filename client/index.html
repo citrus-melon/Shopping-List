@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping List</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="client.js" defer></script>
+</head>
+<body>
+    <div id="components-app" class="demo">
+        <h1>Shopping List</h1>
+        <input type="checkbox" id="edit-button" class="hidden-check" v-model="editing">
+        <label class="toggle-button" for="edit-button">Edit</label>
+        <ol id="main-list">
+          <todo-item
+            v-for="(item, index) in items"
+            v-bind:todo="item"
+            v-bind:key="item.id"
+            v-bind:editing="editing"
+            :ref="setItemRef"
+            @remove="remove(index)"
+          ></todo-item>
+        </ol>
+    </div>
+    <script src="https://unpkg.com/vue@next"></script>
+</body>
+</html>

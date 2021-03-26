@@ -1,0 +1,78 @@
+* {
+    box-sizing: border-box;
+}
+body {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+/*MAIN LIST*/
+#main-list {
+    display: block;
+    width: 100%;
+    margin: 20px 0;
+    list-style: none;
+    padding: 0px;
+    font-size: 2em;
+    white-space: pre;
+}
+#main-list:empty::after {
+    content: 'Press edit to add an item!';
+    color: #999999;
+}
+
+/*LIST ITEM*/
+#main-list li {
+    display: inline;
+    position: relative;
+    white-space: pre;
+    margin: 0;
+}
+#main-list li:not(:last-child)::after {
+    content: ", ";
+}
+#main-list li:empty {
+    display: inline-block;
+}
+#main-list li[contentEditable] {
+    color: #11bbee;
+    text-decoration: underline dotted 1px;
+}
+
+/* LIST ITEM INPUT */
+
+#main-list li input {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    outline: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    font-size: inherit;
+    font-family: inherit;
+}
+
+#main-list li input:focus {
+    color: #11bbee;
+    text-decoration: underline dashed 1px;
+}
+
+/*BUTTONS*/
+.toggle-button {
+    display: inline-block;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+    position: relative;
+    padding: 5px 10px;
+    color: #11bbee;
+    border: solid 2px #11bbee;
+    font-weight: bold;
+    border-radius: 5px;
+}
+.hidden-check:checked + label {
+    color: white;
+    background-color: #11bbee;
+}
+.hidden-check {
+    display: none;
+}
