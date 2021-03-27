@@ -17,6 +17,7 @@
             v-for="(item, index) in items"
             v-bind:todo="item"
             v-bind:key="item.id"
+            v-bind:last="index == items.length-1"
             v-bind:editing="editing"
             :ref="setItemRef"
             @remove="remove(index)"

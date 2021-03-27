@@ -27,15 +27,8 @@ body {
     white-space: pre;
     margin: 0;
 }
-#main-list li:not(:last-child)::after {
-    content: ", ";
-}
-#main-list li:empty {
-    display: inline-block;
-}
-#main-list li[contentEditable] {
-    color: #11bbee;
-    text-decoration: underline dotted 1px;
+#main-list li span {
+    position: relative;
 }
 
 /* LIST ITEM INPUT */

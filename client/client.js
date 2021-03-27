@@ -37,9 +37,9 @@ const shoppingListApp = {
 const app = Vue.createApp(shoppingListApp)
 
 app.component('todo-item', {
-  props: ['todo', 'editing'],
+  props: ['todo', 'editing', 'last'],
   emits: ['remove'],
-  template: `<li>{{ todo.text }}<input type="text" ref="input" v-if="editing" v-model="todo.text" @blur="handleBlur"/></li>`,
+  template: `<li><span>{{ todo.text }}<input type="text" ref="input" v-if="editing" v-model="todo.text" @blur="handleBlur"/></span><span v-if="!last">, </span></li>`,
   methods: {
     handleBlur() {
       if(this.todo.text == '') {
