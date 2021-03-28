@@ -8,10 +8,11 @@
     <script src="client.js" defer></script>
 </head>
 <body>
-    <div id="components-app" class="demo">
+    <div id="app">
         <h1>Shopping List</h1>
-        <input type="checkbox" id="edit-button" class="hidden-check" v-model="editing">
-        <label class="toggle-button" for="edit-button">Edit</label>
+        <div class="actionStrip">
+          <input type="checkbox" id="edit-button" class="hidden-checkbox" v-model="editing"><label for="edit-button" class="button">Edit</label>
+        </div>
         <ol id="main-list">
           <todo-item
             v-for="(item, index) in items"

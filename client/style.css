@@ -1,31 +1,50 @@
+/* GLOBAL STUFF */
 * {
     box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
-body {
+body, html {
+    width: 100%;
+    height: 100%;
+}
+
+/* APP CONTAINER */
+#app {
     font-family: Arial, Helvetica, sans-serif;
+
+    width: 100%;
+    height: 100%;
+    padding: 16px;
+
+    color: var(--text-color);
+    background-color: var(--bkg-color);
+
+    /* Color theme */
+    --text-color: #221466;
+    --bkg-color: #f8f6ff;
+    --accent-color: #5947b3;
+    --space-color: #fff;
+    --shadow-color: #22146633;
 }
 
 /*MAIN LIST*/
 #main-list {
     display: block;
-    width: 100%;
-    margin: 20px 0;
     list-style: none;
-    padding: 0px;
+    
     font-size: 2em;
-    white-space: pre;
 }
+
 #main-list:empty::after {
     content: 'Press edit to add an item!';
-    color: #999999;
+    opacity: 50%;
 }
 
 /*LIST ITEM*/
 #main-list li {
     display: inline;
-    position: relative;
     white-space: pre;
-    margin: 0;
 }
 #main-list li span {
     position: relative;
@@ -34,38 +53,54 @@ body {
 /* LIST ITEM INPUT */
 
 #main-list li input {
+    outline: none;
+    border: none;
+    font: inherit;
+    
     position: absolute;
     left: 0;
     width: 100%;
-    outline: none;
-    border: none;
-    padding: 0;
-    margin: 0;
-    font-size: inherit;
-    font-family: inherit;
-}
 
+    color: var(--accent-color);
+    background-color: var(--space-color);
+    box-shadow: var(--shadow-color) 0px 3px 6px;
+    border-radius: 10px;
+
+    opacity: 0;
+}
 #main-list li input:focus {
-    color: #11bbee;
-    text-decoration: underline dashed 1px;
+    opacity: initial;
 }
 
-/*BUTTONS*/
-.toggle-button {
+/* BUTTONS */
+.actionStrip {
+    margin: 16px 0;
+}
+
+.button {
     display: inline-block;
     -webkit-tap-highlight-color: transparent;
     user-select: none;
     position: relative;
-    padding: 5px 10px;
-    color: #11bbee;
-    border: solid 2px #11bbee;
-    font-weight: bold;
-    border-radius: 5px;
+
+    padding: 8px 16px;
+    color: var(--accent-color);
+    background-color: var(--space-color);
+    box-shadow: var(--shadow-color) 0px 3px 6px;
+    border-radius: 9999px;
+    transition: transform 0.3s, background-color 0.3s, color 0.3s;
+    transform: translateZ(0);
 }
-.hidden-check:checked + label {
-    color: white;
-    background-color: #11bbee;
+
+.button:hover, .button:focus {
+    transform: translateZ(0) scale(1.1);
 }
-.hidden-check {
+
+.button:active, .hidden-checkbox:checked + label {
+    color: var(--space-color);
+    background-color: var(--accent-color);
+}
+
+.hidden-checkbox {
     display: none;
 }

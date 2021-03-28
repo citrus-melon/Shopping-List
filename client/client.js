@@ -54,4 +54,4 @@ app.component('todo-item', {
   }
 })
 
-const vm = app.mount('#components-app')
+const vm = app.mount('#app')
