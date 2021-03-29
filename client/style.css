@@ -28,6 +28,11 @@ body, html {
     --shadow-color: #22146633;
 }
 
+/* BIG TITLE */
+h1 {
+    color: var(--accent-color);
+}
+
 /*MAIN LIST*/
 #main-list {
     display: block;
@@ -86,6 +91,7 @@ body, html {
     -webkit-tap-highlight-color: transparent;
     user-select: none;
     border: none;
+    outline: none;
     font-size: 1em;
 
     padding: 0.5em 1em;
