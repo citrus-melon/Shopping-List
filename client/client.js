@@ -7,12 +7,20 @@ const shoppingListApp = {
         { id: 1, text: 'Cheese' },
         { id: 2, text: 'Whatever else humans are supposed to eat' }
       ],
+      nextId: 3,
       itemRefs: []
     }
   },
   methods: {
     remove(index) {
       this.items.splice(index, 1);
+    },
+    addItem() {
+      newLength = this.items.push({id: this.nextId++, text: ''});
+      this.editing = true;
+      this.$nextTick(() => {
+        this.itemRefs[newLength-1].focus();
+      });
     },
     setItemRef(el) {
       if (el) {
@@ -27,7 +35,7 @@ const shoppingListApp = {
     editing(state){
       if (state) {
         this.$nextTick(() => {
-          this.itemRefs[0].focus();
+          this.itemRefs[this.items.length -1].focus();
         });
       }
     }
