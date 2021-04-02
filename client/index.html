@@ -11,8 +11,8 @@
     <div id="app">
         <h1>Shopping List</h1>
         <div class="actionStrip">
-          <input type="checkbox" id="edit-button" class="hidden-checkbox" v-model="editing"><label for="edit-button" class="button" tabindex="0">Edit</label>
-          <button type="button" @click="addItem" class="button">Add Item</button>
+          <input type="checkbox" id="edit-button" class="hidden-checkbox" v-model="editing" @click="editBtnClick"><label for="edit-button" class="button" tabindex="0">Edit</label>
+          <button type="button" @click="focusNextOrNew" class="button">Add Item</button>
         </div>
         <ol id="main-list">
           <todo-item
@@ -22,7 +22,8 @@
             v-bind:last="index == items.length-1"
             v-bind:editing="editing"
             :ref="setItemRef"
-            @remove="remove(index)"
+            @remove="removeItem(index)"
+            @next="focusNextOrNew(index)"
           ></todo-item>
         </ol>
     </div>

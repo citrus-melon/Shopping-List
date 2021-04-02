@@ -12,33 +12,35 @@ const shoppingListApp = {
     }
   },
   methods: {
-    remove(index) {
+    removeItem (index) {
       this.items.splice(index, 1);
     },
-    addItem() {
-      newLength = this.items.push({id: this.nextId++, text: ''});
-      this.editing = true;
+    focusItem (index) {
       this.$nextTick(() => {
-        this.itemRefs[newLength-1].focus();
+        this.itemRefs[index].focus();
       });
+    },
+    focusNextOrNew (currentIndex) {
+      let nextIndex = this.items.length;
+      if (currentIndex !== undefined) nextIndex = currentIndex + 1;
+      if (this.items[nextIndex] === undefined) {
+        this.items.push({id: this.nextId++, text: ''});
+      }
+      this.editing = true;
+      this.focusItem(nextIndex);
+    },
+    editBtnClick () {
+      this.editing = true;
+      this.focusItem(this.items.length - 1);
     },
     setItemRef(el) {
       if (el) {
         this.itemRefs.push(el)
       }
-    }
+    },
   },
-  beforeUpdate() {
+  beforeUpdate () {
     this.itemRefs = []
-  },
-  watch: {
-    editing(state){
-      if (state) {
-        this.$nextTick(() => {
-          this.itemRefs[this.items.length -1].focus();
-        });
-      }
-    }
   }
 }
 
@@ -46,13 +48,16 @@ const app = Vue.createApp(shoppingListApp)
 
 app.component('todo-item', {
   props: ['todo', 'editing', 'last'],
-  emits: ['remove'],
-  template: `<li><span>{{ todo.text }}<input type="text" ref="input" v-if="editing" v-model="todo.text" @blur="handleBlur"/></span><span v-if="!last">, </span></li>`,
+  emits: ['remove', 'next'],
+  template: `<li><span>{{ todo.text }}<input type="text" ref="input" v-if="editing" v-model="todo.text" @keyup.enter="handleEnter" @blur="handleBlur"/></span><span v-if="!last">, </span></li>`,
   methods: {
     handleBlur() {
       if(this.todo.text == '') {
         this.$emit('remove');
       }
+    },
+    handleEnter() {
+      this.$emit('next');
     },
     focus() {
       this.$nextTick(() => {
