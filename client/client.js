@@ -49,7 +49,7 @@ const app = Vue.createApp(shoppingListApp)
 app.component('todo-item', {
   props: ['todo', 'editing', 'last'],
   emits: ['remove', 'next'],
-  template: `<li><span>{{ todo.text }}<input type="text" ref="input" v-if="editing" v-model="todo.text" @keyup.enter="handleEnter" @blur="handleBlur"/></span><span v-if="!last">, </span></li>`,
+  template: `<li><span>{{ todo.text }}<input type="text" ref="input" v-if="editing" v-model="todo.text" @keydown.tab="handleTab" @keyup.enter="handleEnter" @blur="handleBlur"/></span><span v-if="!last">, </span></li>`,
   methods: {
     handleBlur() {
       if(this.todo.text == '') {
@@ -58,6 +58,11 @@ app.component('todo-item', {
     },
     handleEnter() {
       this.$emit('next');
+    },
+    handleTab() {
+      if (this.last) {
+        this.$emit('next');
+      }
     },
     focus() {
       this.$nextTick(() => {
