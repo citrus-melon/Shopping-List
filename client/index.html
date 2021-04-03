@@ -12,7 +12,7 @@
         <h1>Shopping List</h1>
         <div class="actionStrip">
           <input type="checkbox" id="edit-button" class="hidden-checkbox" v-model="editing" @click="editBtnClick"><label for="edit-button" class="button" tabindex="0">Edit</label>
-          <button type="button" @click="focusNextOrNew" class="button">Add Item</button>
+          <button type="button" @click="focusOrNew(items.length)" class="button">Add Item</button>
         </div>
         <ol id="main-list">
           <todo-item
@@ -23,7 +23,7 @@
             v-bind:editing="editing"
             :ref="setItemRef"
             @remove="removeItem(index)"
-            @next="focusNextOrNew(index)"
+            @next="focusOrNew(index+1)"
           ></todo-item>
         </ol>
     </div>
