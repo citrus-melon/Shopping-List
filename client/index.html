@@ -17,7 +17,7 @@
         <ol id="main-list">
           <todo-item
             v-for="(item, index) in items"
-            v-bind:todo="item"
+            v-model="item.text"
             v-bind:key="item.id"
             v-bind:last="index == items.length-1"
             v-bind:editing="editing"

@@ -44,12 +44,15 @@ const shoppingListApp = {
 const app = Vue.createApp(shoppingListApp)
 
 app.component('todo-item', {
-  props: ['todo', 'editing', 'last'],
-  emits: ['remove', 'next'],
-  template: `<li><span>{{ todo.text }}<input type="text" ref="input" v-if="editing" v-model="todo.text" @keydown.tab.exact.prevent="handleNext" @keyup.enter="handleNext" @blur="handleBlur"/></span><span v-if="!last">, </span></li>`,
+  props: ['modelValue', 'editing', 'last'],
+  emits: ['update:modelValue', 'remove', 'next'],
+  template: `<li><span ref="text" :contenteditable="contenteditable" @input="handleInput" @keydown.tab.exact.prevent="handleNext" @keyup.enter="handleNext" @blur="handleBlur">{{ modelValue }}</span><span v-if="!last">, </span></li>`,
   methods: {
+    handleInput(e) {
+      this.$emit('update:modelValue', e.target.innerText);
+    },
     handleBlur() {
-      if(this.todo.text == '') {
+      if(this.modelValue == '') {
         this.$emit('remove');
       }
     },
@@ -58,8 +61,13 @@ app.component('todo-item', {
     },
     focus() {
       this.$nextTick(() => {
-        this.$refs.input.focus();
+        this.$refs.text.focus();
       });
+    }
+  },
+  computed: {
+    contenteditable() {
+      return this.editing ? 'plaintext-only' : 'false'
     }
   }
 })
