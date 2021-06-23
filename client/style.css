@@ -50,6 +50,7 @@ h1 {
 #main-list li {
     display: inline;
     white-space: pre-wrap;
+    overflow-wrap: break-word;
 }
 #main-list li span:focus {
     outline: none;
