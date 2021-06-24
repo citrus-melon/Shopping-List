@@ -16,8 +16,20 @@
         {
             "type": "pwa-chrome",
             "request": "launch",
-            "name": "Launch Frontend",
-            "file": "${workspaceFolder}/client/index.html"
+            "name": "Launch Client",
+            "url": "http://localhost:8080",
+            "webRoot": "${workspaceFolder}/client",
+            "pathMapping": {
+              "/_karma_webpack_": "${workspaceFolder}/client"
+            },
+            "sourceMapPathOverrides": {
+              "webpack:/*": "${webRoot}/*",
+              "/./*": "${webRoot}/*",
+              "/src/*": "${webRoot}/*",
+              "/*": "*",
+              "/./~/*": "${webRoot}/node_modules/*"
+            },
+            "preLaunchTask": "Vue Serve"
         }
     ]
 }
