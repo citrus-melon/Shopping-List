@@ -1,7 +1,8 @@
 <template>
-  <li>
+  <li @click="handleClick" :class="{completed: completed}">
     <span
       ref="text"
+      id="text"
       :contenteditable="contenteditable"
       @input="handleInput"
       @keydown.tab.exact.prevent="handleNext"
@@ -15,9 +16,13 @@
 <script>
 export default {
   name: "TodoItem",
-  props: ["modelValue", "editing", "last"],
-  emits: ["update:modelValue", "remove", "next"],
+  props: ["modelValue", "completed", "editing", "last"],
+  emits: ["update:modelValue", "update:completed", "remove", "next"],
   methods: {
+    handleClick(e) {
+      if (this.editing) return;
+      this.$emit("update:completed", !this.completed);
+    },
     handleInput(e) {
       this.$emit("update:modelValue", e.target.innerText);
     },
@@ -50,8 +55,14 @@ export default {
   white-space: pre-wrap;
   overflow-wrap: break-word;
 }
-#main-list li span:focus {
+#main-list li.completed #text {
+  text-decoration: line-through;
+  opacity: 50%;
+}
+#main-list li #text:focus {
   outline: none;
+  text-decoration: unset;
+  opacity: unset;
 
   color: var(--accent-color);
   background-color: var(--space-color);

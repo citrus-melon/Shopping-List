@@ -8,6 +8,7 @@
     <todo-item
       v-for="(item, index) in items"
       v-model="item.text"
+      v-model:completed="item.completed"
       v-bind:key="item.id"
       v-bind:last="index == items.length-1"
       v-bind:editing="editing"
@@ -30,9 +31,9 @@ export default {
     return {
       editing:false,
       items: [
-        { id: 0, text: 'Vegetables' },
-        { id: 1, text: 'Cheese' },
-        { id: 2, text: 'Whatever else humans are supposed to eat' }
+        { id: 0, text: 'Vegetables', completed: false },
+        { id: 1, text: 'Cheese', completed: false },
+        { id: 2, text: 'Whatever else humans are supposed to eat', completed: false }
       ],
       nextId: 3,
       itemRefs: []
