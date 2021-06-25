@@ -8,7 +8,7 @@
       @keydown.tab.exact.prevent="handleNext"
       @keyup.enter="handleNext"
       @blur="handleBlur"
-      >{{ modelValue }}</span
+      >{{ label }}</span
     ><span v-if="!last">, </span>
   </li>
 </template>
@@ -16,18 +16,18 @@
 <script>
 export default {
   name: "TodoItem",
-  props: ["modelValue", "completed", "editing", "last"],
-  emits: ["update:modelValue", "update:completed", "remove", "next"],
+  props: ["label", "completed", "editing", "last"],
+  emits: ["update:label", "update:completed", "remove", "next"],
   methods: {
     handleClick(e) {
       if (this.editing) return;
       this.$emit("update:completed", !this.completed);
     },
     handleInput(e) {
-      this.$emit("update:modelValue", e.target.innerText);
+      this.$emit("update:label", e.target.innerText);
     },
     handleBlur() {
-      if (this.modelValue == "") {
+      if (this.label == "") {
         this.$emit("remove");
       }
     },

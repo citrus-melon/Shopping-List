@@ -7,7 +7,7 @@
   <ol id="main-list">
     <todo-item
       v-for="(item, index) in items"
-      v-model="item.text"
+      v-model:label="item.label"
       v-model:completed="item.completed"
       v-bind:key="item.id"
       v-bind:last="index == items.length-1"
@@ -31,9 +31,9 @@ export default {
     return {
       editing:false,
       items: [
-        { id: 0, text: 'Vegetables', completed: false },
-        { id: 1, text: 'Cheese', completed: false },
-        { id: 2, text: 'Whatever else humans are supposed to eat', completed: false }
+        { id: 0, label: 'Vegetables', completed: false },
+        { id: 1, label: 'Cheese', completed: false },
+        { id: 2, label: 'Whatever else humans are supposed to eat', completed: false }
       ],
       nextId: 3,
       itemRefs: []
@@ -51,7 +51,7 @@ export default {
     },
     focusOrNew (index) {
       if (this.items[index] === undefined) {
-        this.items.push({id: this.nextId++, text: ''});
+        this.items.push({id: this.nextId++, label: ''});
       }
       this.focusItem(index);
     },
