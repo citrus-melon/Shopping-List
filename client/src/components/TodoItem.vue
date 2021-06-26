@@ -2,7 +2,7 @@
   <li @click="handleClick" :class="{completed: completed}" class="todo-item">
     <span
       ref="text"
-      id="text"
+      class="label"
       :contenteditable="contenteditable"
       @input="handleInput"
       @keydown.tab.exact.prevent="handleNext"
@@ -55,11 +55,11 @@ export default {
   white-space: pre-wrap;
   overflow-wrap: break-word;
 }
-.todo-item.completed #text {
+.todo-item.completed .label {
   text-decoration: line-through;
   opacity: 50%;
 }
-.todo-item #text:focus {
+.todo-item .label:focus {
   outline: none;
   text-decoration: unset;
   opacity: unset;
