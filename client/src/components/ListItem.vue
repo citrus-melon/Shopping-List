@@ -1,5 +1,5 @@
 <template>
-  <li @click="handleClick" :class="{completed: completed}" class="todo-item">
+  <li @click="handleClick" :class="{completed: completed}" class="list-item">
     <span
       ref="text"
       class="label"
@@ -15,7 +15,7 @@
 
 <script>
 export default {
-  name: "TodoItem",
+  name: "ListItem",
   props: ["label", "completed", "editing", "last"],
   emits: ["update:label", "update:completed", "remove", "next"],
   methods: {
@@ -50,16 +50,16 @@ export default {
 
 <style>
 /*LIST ITEM*/
- .todo-item {
+ .list-item {
   display: inline;
   white-space: pre-wrap;
   overflow-wrap: break-word;
 }
-.todo-item.completed .label {
+.list-item.completed .label {
   text-decoration: line-through;
   opacity: 50%;
 }
-.todo-item .label:focus {
+.list-item .label:focus {
   outline: none;
   text-decoration: unset;
   opacity: unset;

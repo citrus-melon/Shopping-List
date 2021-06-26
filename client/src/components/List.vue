@@ -4,7 +4,7 @@
     <button type="button" @click="focusOrNew(items.length)" class="button">Add Item</button>
   </div>
   <ol class="list">
-    <todo-item
+    <list-item
       v-for="(item, index) in items"
       v-model:label="item.label"
       v-model:completed="item.completed"
@@ -14,17 +14,17 @@
       :ref="setItemRef"
       @remove="removeItem(index)"
       @next="focusOrNew(index + 1)"
-    ></todo-item>
+    ></list-item>
   </ol>
 </template>
 
 <script>
-import TodoItem from './TodoItem.vue'
+import ListItem from './ListItem.vue'
 
 export default {
   name: 'List',
   components: {
-    TodoItem
+    ListItem
   },
   data() {
     return {
