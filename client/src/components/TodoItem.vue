@@ -1,5 +1,5 @@
 <template>
-  <li @click="handleClick" :class="{completed: completed}">
+  <li @click="handleClick" :class="{completed: completed}" class="todo-item">
     <span
       ref="text"
       id="text"
@@ -50,16 +50,16 @@ export default {
 
 <style>
 /*LIST ITEM*/
-#main-list li {
+ .todo-item {
   display: inline;
   white-space: pre-wrap;
   overflow-wrap: break-word;
 }
-#main-list li.completed #text {
+.todo-item.completed #text {
   text-decoration: line-through;
   opacity: 50%;
 }
-#main-list li #text:focus {
+.todo-item #text:focus {
   outline: none;
   text-decoration: unset;
   opacity: unset;
