@@ -6,8 +6,9 @@
       :contenteditable="contenteditable"
       @input="handleInput"
       @keydown.tab.exact.prevent="handleNext"
-      @keyup.enter="handleNext"
+      @keydown.enter.prevent="handleNext"
       @blur="handleBlur"
+      @paste.prevent="handlePaste"
       >{{ label }}</span
     ><span v-if="!last">, </span>
   </li>
@@ -29,6 +30,34 @@ export default {
     handleBlur() {
       if (this.label == "") {
         this.$emit("remove");
+      }
+    },
+    handlePaste(e) {
+      // Get the copied text from the clipboard
+      let text = e.clipboardData
+        ? (e.originalEvent || e).clipboardData.getData("text/plain")
+        : // For IE
+        window.clipboardData
+        ? window.clipboardData.getData("Text")
+        : "";
+      
+      text = text.replace(/\r?\n|\r/g, ' ');
+
+      if (document.queryCommandSupported("insertText")) {
+        document.execCommand("insertText", false, text);
+      } else {
+        // Insert text at the current position of caret
+        const range = document.getSelection().getRangeAt(0);
+        range.deleteContents();
+
+        const textNode = document.createTextNode(text);
+        range.insertNode(textNode);
+        range.selectNodeContents(textNode);
+        range.collapse(false);
+
+        const selection = window.getSelection();
+        selection.removeAllRanges();
+        selection.addRange(range);
       }
     },
     handleNext() {
