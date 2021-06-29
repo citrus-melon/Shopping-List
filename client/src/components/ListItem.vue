@@ -15,6 +15,9 @@
 </template>
 
 <script>
+const newlineRegex = /\r?\n|\r/;
+const newlineGlobalRegex= /\r?\n|\r/g;
+
 export default {
   name: "ListItem",
   props: ["label", "completed", "editing", "last"],
@@ -25,6 +28,11 @@ export default {
       this.$emit("update:completed", !this.completed);
     },
     handleInput(e) {
+      if (newlineRegex.test(e.target.innerText)) {
+        e.target.innerText = e.target.innerText.replace(newlineGlobalRegex, '');
+        this.handleNext();
+      }
+
       this.$emit("update:label", e.target.innerText);
     },
     handleBlur() {
@@ -41,7 +49,7 @@ export default {
         ? window.clipboardData.getData("Text")
         : "";
       
-      text = text.replace(/\r?\n|\r/g, ' ');
+      text = text.replace(newlineGlobalRegex, ' ');
 
       if (document.queryCommandSupported("insertText")) {
         document.execCommand("insertText", false, text);
