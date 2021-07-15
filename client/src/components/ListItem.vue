@@ -7,6 +7,7 @@
       @input="handleInput"
       @keydown.tab.exact.prevent="handleNext"
       @keydown.enter.prevent="handleNext"
+      @keydown.,.prevent="handleNext"
       @blur="handleBlur"
       @paste.prevent="handlePaste"
       >{{ label }}</span
@@ -15,8 +16,8 @@
 </template>
 
 <script>
-const newlineRegex = /\r?\n|\r/;
-const newlineGlobalRegex= /\r?\n|\r/g;
+const itemDelimiterRegex = /\r?\n|\r|,|\uFF0C/;
+const itemDelimiterGlobalRegex= /\r?\n|\r|,|\uFF0C/g;
 
 export default {
   name: "ListItem",
@@ -28,8 +29,8 @@ export default {
       this.$emit("update:completed", !this.completed);
     },
     handleInput(e) {
-      if (newlineRegex.test(e.target.innerText)) {
-        e.target.innerText = e.target.innerText.replace(newlineGlobalRegex, '');
+      if (itemDelimiterRegex.test(e.target.innerText)) {
+        e.target.innerText = e.target.innerText.replace(itemDelimiterGlobalRegex, '');
         this.handleNext();
       }
 
@@ -49,7 +50,7 @@ export default {
         ? window.clipboardData.getData("Text")
         : "";
       
-      text = text.replace(newlineGlobalRegex, ' ');
+      text = text.replace(itemDelimiterGlobalRegex, ' ');
 
       if (document.queryCommandSupported("insertText")) {
         document.execCommand("insertText", false, text);
