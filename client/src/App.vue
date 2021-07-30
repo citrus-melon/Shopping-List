@@ -32,6 +32,7 @@ body, html {
 
   width: 100%;
   height: 100%;
+  overflow: auto;
   padding: 1em;
 
   color: var(--text-color);
