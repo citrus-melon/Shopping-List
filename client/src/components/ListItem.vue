@@ -8,6 +8,7 @@
       @keydown.tab.exact.prevent="handleNext"
       @keydown.enter.prevent="handleNext"
       @keydown.,.prevent="handleNext"
+      @focus="androidCaretFix"
       @blur="handleBlur"
       @paste.prevent="handlePaste"
       >{{ label }}</span
@@ -33,12 +34,13 @@ export default {
         e.target.innerText = e.target.innerText.replace(itemDelimiterGlobalRegex, '');
         this.handleNext();
       }
-
-      this.$emit("update:label", e.target.innerText);
     },
-    handleBlur() {
-      if (this.label == "") {
+    handleBlur(e) {
+      console.log(e.target.innerText)
+      if (e.target.innerText == "") {
         this.$emit("remove");
+      } else {
+        this.$emit("update:label", e.target.innerText);
       }
     },
     handlePaste(e) {
@@ -71,6 +73,24 @@ export default {
     },
     handleNext() {
       this.$emit("next");
+    },
+    androidCaretFix(e) {
+      const selection = window.getSelection();
+      const selectionRange = new Range();
+
+      const originalContent = e.target.textContent;
+
+      // Clear the content and select in the empty element
+      e.target.textContent = '';
+      selectionRange.selectNodeContents(e.target);
+      selection.removeAllRanges();
+      selection.addRange(selectionRange);
+      
+      // Re-insert the content and set the cursor at the end
+      const textNode = document.createTextNode(originalContent);
+      selectionRange.insertNode(textNode);
+      selectionRange.selectNodeContents(textNode);
+      selectionRange.collapse(false);
     },
     focus() {
       this.$nextTick(() => {
