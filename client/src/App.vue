@@ -1,6 +1,6 @@
 <template>
   <h1>Shopping List</h1>
-  <list/>
+  <list storage-key="mainlist"/>
 </template>
 
 <script>

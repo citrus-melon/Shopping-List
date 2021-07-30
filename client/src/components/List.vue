@@ -26,6 +26,7 @@ export default {
   components: {
     ListItem
   },
+  props: ['storageKey'],
   data() {
     return {
       editing:false,
@@ -47,6 +48,7 @@ export default {
     focusOrNew (index) {
       if (this.items[index] === undefined) {
         this.items.push({id: this.nextId++, label: ''});
+        console.log(this.nextId);
       }
       this.focusItem(index);
     },
@@ -61,6 +63,23 @@ export default {
   },
   beforeUpdate () {
     this.itemRefs = []
+  },
+  watch: {
+    items: {
+      handler(newValue) {
+        localStorage.setItem(this.storageKey + '_items', JSON.stringify(newValue));
+      },
+      deep: true
+    },
+    nextId(newValue) {
+      localStorage.setItem(this.storageKey + '_nextId', newValue);
+    }
+  },
+  created() {
+    const storedItems = localStorage.getItem(this.storageKey + '_items');
+    if (storedItems) this.items = JSON.parse(storedItems);
+    const storedNextId = localStorage.getItem(this.storageKey + '_nextId');
+    if (storedNextId) this.nextId = parseInt(storedNextId);
   }
 };
 </script>
