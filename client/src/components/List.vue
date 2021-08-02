@@ -1,6 +1,7 @@
 <template>
   <div class="actionStrip">
-    <input type="checkbox" id="edit-button" class="hidden-checkbox" v-model="editing" @click="editBtnClick"><label for="edit-button" class="button" tabindex="0">Edit</label>
+    <input type="checkbox" id="edit-button" class="hidden-checkbox" v-model="editing" @click="editBtnClick">
+    <label for="edit-button" class="button" tabindex="0">Edit</label>
     <button type="button" @click="focusOrNew(items.length)" class="button">Add Item</button>
   </div>
   <ol class="list">

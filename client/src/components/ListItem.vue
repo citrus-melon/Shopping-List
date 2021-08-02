@@ -1,18 +1,18 @@
 <template>
-  <li @click="handleClick" :class="{completed: completed}" class="list-item">
+  <li @click="toggleCompletion" :class="{completed: completed}" class="list-item">
     <span
       ref="text"
       class="label"
       :contenteditable="contenteditable"
-      @input="handleInput"
-      @keydown.tab.exact.prevent="handleNext"
-      @keydown.enter.prevent="handleNext"
-      @keydown.,.prevent="handleNext"
+      @input="onInput"
+      @keydown.tab.exact.prevent="nextItem"
+      @keydown.enter.prevent="nextItem"
+      @keydown.,.prevent="nextItem"
       @focus="androidCaretFix"
-      @blur="handleBlur"
-      @paste.prevent="handlePaste"
-      >{{ label }}</span
-    ><span v-if="!last">, </span>
+      @blur="onBlur"
+      @paste.prevent="onPaste"
+    >{{ label }}</span>
+    <span v-if="!last">, </span>
   </li>
 </template>
 
@@ -25,17 +25,17 @@ export default {
   props: ["label", "completed", "editing", "last"],
   emits: ["update:label", "update:completed", "remove", "next"],
   methods: {
-    handleClick(e) {
+    toggleCompletion(e) {
       if (this.editing) return;
       this.$emit("update:completed", !this.completed);
     },
-    handleInput(e) {
+    onInput(e) {
       if (itemDelimiterRegex.test(e.target.innerText)) {
         e.target.innerText = e.target.innerText.replace(itemDelimiterGlobalRegex, '');
-        this.handleNext();
+        this.nextItem();
       }
     },
-    handleBlur(e) {
+    onBlur(e) {
       console.log(e.target.innerText)
       if (e.target.innerText == "") {
         this.$emit("remove");
@@ -43,7 +43,7 @@ export default {
         this.$emit("update:label", e.target.innerText);
       }
     },
-    handlePaste(e) {
+    onPaste(e) {
       // Get the copied text from the clipboard
       let text = e.clipboardData
         ? (e.originalEvent || e).clipboardData.getData("text/plain")
@@ -71,7 +71,7 @@ export default {
         selection.addRange(range);
       }
     },
-    handleNext() {
+    nextItem() {
       this.$emit("next");
     },
     androidCaretFix(e) {
