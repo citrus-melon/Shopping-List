@@ -10,7 +10,7 @@
       v-model:label="item.label"
       v-model:completed="item.completed"
       v-bind:key="item.id"
-      v-bind:id="item.id"
+      v-bind:item-id="item.id"
       v-bind:last="index == items.length - 1"
       v-bind:editing="editing"
       :ref="setItemRef"
@@ -70,7 +70,7 @@ export default {
     },
     setItemRef(el) {
       if (el) {
-        this.itemRefs[el.id] = el;
+        this.itemRefs[el.itemId] = el;
       }
     },
   },
