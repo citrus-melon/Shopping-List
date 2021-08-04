@@ -49,7 +49,6 @@ export default {
     focusOrNew (index) {
       if (this.items[index] === undefined) {
         this.items.push({id: this.nextId++, label: ''});
-        console.log(this.nextId);
       }
       this.focusItem(index);
     },

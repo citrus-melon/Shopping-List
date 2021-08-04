@@ -36,7 +36,6 @@ export default {
       }
     },
     onBlur(e) {
-      console.log(e.target.innerText)
       if (e.target.innerText == "") {
         this.$emit("remove");
       } else {
