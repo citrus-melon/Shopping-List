@@ -10,6 +10,7 @@
       v-model:label="item.label"
       v-model:completed="item.completed"
       v-bind:key="item.id"
+      v-bind:id="item.id"
       v-bind:last="index == items.length - 1"
       v-bind:editing="editing"
       :ref="setItemRef"
@@ -33,36 +34,39 @@ export default {
       editing:false,
       items: [],
       nextId: 0,
-      itemRefs: []
+      itemRefs: {}
     }
   },
   methods: {
     removeItem (index) {
       this.items.splice(index, 1);
     },
-    focusItem (index) {
+    focusItem (id) {
       this.editing = true;
       this.$nextTick(() => {
-        this.itemRefs[index].focus();
+        this.itemRefs[id].focus();
       });
     },
     focusOrNew (index) {
       if (this.items[index] === undefined) {
-        this.items.push({id: this.nextId++, label: ''});
+        this.items.push({id: this.nextId, label: ''});
+        this.focusItem(this.nextId);
+        this.nextId++;
+      } else {
+        this.focusItem(this.items[index].id);
       }
-      this.focusItem(index);
     },
     editBtnClick () {
       if(!this.editing) this.focusOrNew(0);
     },
     setItemRef(el) {
       if (el) {
-        this.itemRefs.push(el)
+        this.itemRefs[el.id] = el;
       }
     },
   },
   beforeUpdate () {
-    this.itemRefs = []
+    this.itemRefs = {}
   },
   watch: {
     items: {

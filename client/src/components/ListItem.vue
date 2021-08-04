@@ -22,7 +22,7 @@ const itemDelimiterGlobalRegex= /\r?\n|\r|,|\uFF0C/g;
 
 export default {
   name: "ListItem",
-  props: ["label", "completed", "editing", "last"],
+  props: ["id", "label", "completed", "editing", "last"],
   emits: ["update:label", "update:completed", "remove", "next"],
   methods: {
     toggleCompletion(e) {
