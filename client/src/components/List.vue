@@ -2,7 +2,7 @@
   <div class="actionStrip">
     <input type="checkbox" id="edit-button" class="hidden-checkbox" v-model="editing" @click="editBtnClick">
     <label for="edit-button" class="button" tabindex="0">Edit</label>
-    <button type="button" @click="focusOrNew(items.length)" class="button">Add Item</button>
+    <button type="button" @click="insertOrFocusItem(items.length)" class="button">Add Item</button>
   </div>
   <ol class="list">
     <list-item
@@ -15,7 +15,8 @@
       v-bind:editing="editing"
       :ref="setItemRef"
       @remove="removeItem(index)"
-      @next="focusOrNew(index + 1)"
+      @focus-next="insertOrFocusItem(index + 1)"
+      @insert-after="insertAndFocusItem(index + 1)"
     ></list-item>
   </ol>
 </template>
@@ -47,17 +48,25 @@ export default {
         this.itemRefs[id].focus();
       });
     },
-    focusOrNew (index) {
+    insertItem (index, label) {
+      if (!label) label = '';
+      const item = {id: this.nextId++, label: label};
+      this.items.splice(index, 0, item);
+      return item;
+    },
+    insertAndFocusItem (index, label) {
+      const item = this.insertItem(index, label);
+      this.focusItem(item.id);
+    },
+    insertOrFocusItem (index) {
       if (this.items[index] === undefined) {
-        this.items.push({id: this.nextId, label: ''});
-        this.focusItem(this.nextId);
-        this.nextId++;
+        this.insertAndFocusItem(index)
       } else {
         this.focusItem(this.items[index].id);
       }
     },
     editBtnClick () {
-      if(!this.editing) this.focusOrNew(0);
+      if(!this.editing) this.insertOrFocusItem(0);
     },
     setItemRef(el) {
       if (el) {

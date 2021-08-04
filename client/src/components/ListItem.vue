@@ -5,9 +5,9 @@
       class="label"
       :contenteditable="contenteditable"
       @input="onInput"
-      @keydown.tab.exact.prevent="nextItem"
-      @keydown.enter.prevent="nextItem"
-      @keydown.,.prevent="nextItem"
+      @keydown.tab.exact.prevent="focusNextItem"
+      @keydown.enter.prevent="insertItemAfter"
+      @keydown.,.prevent="insertItemAfter"
       @focus="androidCaretFix"
       @blur="onBlur"
       @paste.prevent="onPaste"
@@ -23,7 +23,7 @@ const itemDelimiterGlobalRegex= /\r?\n|\r|,|\uFF0C/g;
 export default {
   name: "ListItem",
   props: ["id", "label", "completed", "editing", "last"],
-  emits: ["update:label", "update:completed", "remove", "next"],
+  emits: ["update:label", "update:completed", "remove", "focusNext", "insertAfter"],
   methods: {
     toggleCompletion(e) {
       if (this.editing) return;
@@ -32,7 +32,7 @@ export default {
     onInput(e) {
       if (itemDelimiterRegex.test(e.target.innerText)) {
         e.target.innerText = e.target.innerText.replace(itemDelimiterGlobalRegex, '');
-        this.nextItem();
+        this.focusNextItem();
       }
     },
     onBlur(e) {
@@ -70,8 +70,11 @@ export default {
         selection.addRange(range);
       }
     },
-    nextItem() {
-      this.$emit("next");
+    focusNextItem() {
+      this.$emit("focusNext");
+    },
+    insertItemAfter() {
+      this.$emit("insertAfter");
     },
     androidCaretFix(e) {
       const selection = window.getSelection();
