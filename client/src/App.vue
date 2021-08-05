@@ -1,6 +1,10 @@
 <template>
   <h1>Shopping List</h1>
-  <list storage-key="mainlist"/>
+  <list
+    v-model:items="mainList"
+    :nextId="nextId"
+    @useId="nextId++"
+  />
 </template>
 
 <script>
@@ -10,6 +14,29 @@ export default {
   name: 'App',
   components: {
     List
+  },
+  data() {
+    return {
+      mainList: [],
+      nextId: 0
+    }
+  },
+  created() {
+    const storedMainList = localStorage.getItem('mainList');
+    if (storedMainList) this.mainList = JSON.parse(storedMainList);
+    const storedNextId = localStorage.getItem('nextId');
+    if (storedNextId) this.nextId = JSON.parse(storedNextId);
+  },
+  watch: {
+    mainList: {
+      handler(newValue) {
+        localStorage.setItem('mainList', JSON.stringify(newValue));
+      },
+      deep: true
+    },
+    nextId(newValue) {
+      localStorage.setItem('nextId', newValue);
+    }
   }
 }
 </script>

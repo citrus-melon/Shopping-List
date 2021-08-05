@@ -29,12 +29,11 @@ export default {
   components: {
     ListItem
   },
-  props: ['storageKey'],
+  props: ['items', 'nextId'],
+  emits: ['update:items', 'useId'],
   data() {
     return {
       editing:false,
-      items: [],
-      nextId: 0,
       itemRefs: {}
     }
   },
@@ -50,8 +49,9 @@ export default {
     },
     insertItem (index, label) {
       if (!label) label = '';
-      const item = {id: this.nextId++, label: label};
+      const item = {id: this.nextId, label: label};
       this.items.splice(index, 0, item);
+      this.$emit('useId');
       return item;
     },
     insertAndFocusItem (index, label) {
@@ -80,19 +80,10 @@ export default {
   watch: {
     items: {
       handler(newValue) {
-        localStorage.setItem(this.storageKey + '_items', JSON.stringify(newValue));
+        this.$emit("update:items", newValue);
       },
       deep: true
-    },
-    nextId(newValue) {
-      localStorage.setItem(this.storageKey + '_nextId', newValue);
     }
-  },
-  created() {
-    const storedItems = localStorage.getItem(this.storageKey + '_items');
-    if (storedItems) this.items = JSON.parse(storedItems);
-    const storedNextId = localStorage.getItem(this.storageKey + '_nextId');
-    if (storedNextId) this.nextId = parseInt(storedNextId);
   }
 };
 </script>
