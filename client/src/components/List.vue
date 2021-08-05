@@ -1,8 +1,7 @@
 <template>
   <div class="actionStrip">
-    <input type="checkbox" id="edit-button" class="hidden-checkbox" v-model="editing" @click="editBtnClick">
-    <label for="edit-button" class="button" tabindex="0">Edit</label>
-    <button type="button" @click="insertOrFocusItem(items.length)" class="button">Add Item</button>
+    <toggle-button v-model="editing" @click="editBtnClick">Edit</toggle-button>
+    <styled-button @click="insertOrFocusItem(items.length)">Add Item</styled-button>
   </div>
   <ol class="list">
     <list-item
@@ -22,13 +21,13 @@
 </template>
 
 <script>
-import ListItem from './ListItem.vue'
+import ListItem from './ListItem.vue';
+import StyledButton from './StyledButton.vue';
+import ToggleButton from './ToggleButton.vue';
 
 export default {
   name: 'List',
-  components: {
-    ListItem
-  },
+  components: {ListItem, StyledButton, ToggleButton},
   props: ['items', 'nextId'],
   emits: ['update:items', 'useId'],
   data() {
@@ -101,41 +100,11 @@ export default {
   opacity: 50%;
 }
 
-/* BUTTONS */
+/* ACTION STRIP */
 .actionStrip {
   margin: 1em 0;
 }
 .actionStrip > *:not(:last-child) {
   margin-right: 0.5em;
-}
-
-.button {
-  display: inline-block;
-  -webkit-tap-highlight-color: transparent;
-  user-select: none;
-  border: none;
-  outline: none;
-  font-size: 1em;
-
-  padding: 0.5em 1em;
-  color: var(--accent-color);
-  background-color: var(--space-color);
-  box-shadow: var(--shadow-color) 0 3px 6px;
-  border-radius: 9999px;
-  transition: transform 0.3s, background-color 0.3s, color 0.3s;
-  transform: translateZ(0);
-}
-
-.button:hover, .button:focus {
-  transform: translateZ(0) scale(1.1);
-}
-
-.button:active, .hidden-checkbox:checked + label {
-  color: var(--space-color);
-  background-color: var(--accent-color);
-}
-
-.hidden-checkbox {
-  display: none;
 }
 </style>
