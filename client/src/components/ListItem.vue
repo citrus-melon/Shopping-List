@@ -1,5 +1,5 @@
 <template>
-  <li @click="toggleCompletion" :class="{completed: completed}" class="list-item">
+  <li :class="{completed: completed}" class="list-item">
     <span
       ref="text"
       class="label"
@@ -23,12 +23,8 @@ const itemDelimiterGlobalRegex= /\r?\n|\r|,|\uFF0C/g;
 export default {
   name: "ListItem",
   props: ["itemId", "label", "completed", "editing", "last"],
-  emits: ["update:label", "update:completed", "remove", "focusNext", "insertAfter"],
+  emits: ["update:label", "remove", "focusNext", "insertAfter"],
   methods: {
-    toggleCompletion(e) {
-      if (this.editing) return;
-      this.$emit("update:completed", !this.completed);
-    },
     onInput(e) {
       if (itemDelimiterRegex.test(e.target.innerText)) {
         e.target.innerText = e.target.innerText.replace(itemDelimiterGlobalRegex, '');

@@ -4,6 +4,7 @@
     v-model:items="mainList"
     :nextId="nextId"
     @useId="nextId++"
+    @item-action="toggleCompletion"
   />
   <styled-button class="archive-tab" @click="archiveOpen=true">Archive</styled-button>
   <div class="archive-overlay" v-if="archiveOpen">
@@ -59,6 +60,12 @@ export default {
     },
     nextId(newValue) {
       localStorage.setItem('nextId', newValue);
+    }
+  },
+  methods: {
+    toggleCompletion(index) {
+      const item = this.mainList[index];
+      item.completed = !item.completed;
     }
   }
 }

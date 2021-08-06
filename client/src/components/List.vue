@@ -14,6 +14,7 @@
       v-bind:last="index == items.length - 1"
       v-bind:editing="editing"
       :ref="setItemRef"
+      @click="itemAction(index)"
       @remove="removeItem(index)"
       @focus-next="insertOrFocusItem(index + 1)"
       @insert-after="insertAndFocusItem(index + 1)"
@@ -30,7 +31,7 @@ export default {
   name: 'List',
   components: {ListItem, StyledButton, ToggleButton},
   props: ['items', 'nextId'],
-  emits: ['update:items', 'useId'],
+  emits: ['update:items', 'itemAction', 'useId'],
   data() {
     return {
       editing:false,
@@ -64,6 +65,10 @@ export default {
       } else {
         this.focusItem(this.items[index].id);
       }
+    },
+    itemAction (index) {
+      if (this.editing) return;
+      this.$emit('itemAction', index);
     },
     editBtnClick () {
       if(!this.editing) this.insertOrFocusItem(0);
