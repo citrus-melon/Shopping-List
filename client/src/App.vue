@@ -5,29 +5,35 @@
     :nextId="nextId"
     @useId="nextId++"
   />
-  <div class="archive-overlay">
+  <styled-button class="archive-tab" @click="archiveOpen=true">Archive</styled-button>
+  <div class="archive-overlay" v-if="archiveOpen">
     <h1>Archive</h1>
     <list
       :items="archiveList"
       :nextId="nextId"
       @useId="nextId++"
-    />
+    >
+      <styled-button class="archive-close" @click="archiveOpen=false">Close</styled-button>
+    </list>
   </div>
 </template>
 
 <script>
 import List from './components/List.vue'
+import StyledButton from './components/StyledButton.vue';
 
 export default {
   name: 'App',
   components: {
-    List
+    List,
+    StyledButton
   },
   data() {
     return {
       mainList: [],
       archiveList: [],
-      nextId: 0
+      nextId: 0,
+      archiveOpen: false
     }
   },
   created() {
@@ -111,5 +117,20 @@ h1 {
 }
 .archive-overlay h1 {
   color: var(--space-color);
+}
+
+.button.archive-tab {
+  position: absolute;
+  bottom: 0;
+  padding-bottom: 0.5em;
+  border-radius: 1em 1em 0 0;
+
+  background: var(--accent-color);
+  color: var(--space-color);
+
+  transform: none;
+}
+.button.archive-tab:hover {
+  transform: translateY(-10%) scale(1.1);
 }
 </style>

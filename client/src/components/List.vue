@@ -2,6 +2,7 @@
   <div class="actionStrip">
     <toggle-button v-model="editing" @click="editBtnClick">Edit</toggle-button>
     <styled-button @click="insertOrFocusItem(items.length)">Add Item</styled-button>
+    <slot></slot>
   </div>
   <ol class="list">
     <list-item
