@@ -5,6 +5,14 @@
     :nextId="nextId"
     @useId="nextId++"
   />
+  <div class="archive-overlay">
+    <h1>Archive</h1>
+    <list
+      :items="archiveList"
+      :nextId="nextId"
+      @useId="nextId++"
+    />
+  </div>
 </template>
 
 <script>
@@ -18,12 +26,15 @@ export default {
   data() {
     return {
       mainList: [],
+      archiveList: [],
       nextId: 0
     }
   },
   created() {
     const storedMainList = localStorage.getItem('mainList');
     if (storedMainList) this.mainList = JSON.parse(storedMainList);
+    const storedArchiveList = localStorage.getItem('archiveList');
+    if (storedArchiveList) this.archiveList = JSON.parse(storedArchiveList);
     const storedNextId = localStorage.getItem('nextId');
     if (storedNextId) this.nextId = JSON.parse(storedNextId);
   },
@@ -31,6 +42,12 @@ export default {
     mainList: {
       handler(newValue) {
         localStorage.setItem('mainList', JSON.stringify(newValue));
+      },
+      deep: true
+    },
+    archiveList: {
+      handler(newValue) {
+        localStorage.setItem('archiveList', JSON.stringify(newValue));
       },
       deep: true
     },
@@ -76,5 +93,23 @@ body, html {
 /* BIG TITLE */
 h1 {
   color: var(--accent-color);
+}
+
+/* ARCHIVE */
+.archive-overlay {
+  background: var(--accent-color);
+  color: var(--space-color);
+
+  position: absolute;
+  left: 0;
+  width: 100%;
+  bottom: 0;
+  height: 80%;
+
+  padding: 1em;
+  border-radius: 2em 2em 0 0;
+}
+.archive-overlay h1 {
+  color: var(--space-color);
 }
 </style>
