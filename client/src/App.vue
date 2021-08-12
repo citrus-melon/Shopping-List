@@ -9,12 +9,12 @@
   <styled-button class="archive-tab" @click="archiveOpen=true">Archive</styled-button>
   <div class="archive-overlay" v-if="archiveOpen">
     <h1>Archive</h1>
+    <styled-button class="archive-close" @click="archiveOpen=false">Close</styled-button>
     <list
       :items="archiveList"
       :nextId="nextId"
       @useId="nextId++"
     >
-      <styled-button class="archive-close" @click="archiveOpen=false">Close</styled-button>
     </list>
   </div>
 </template>
