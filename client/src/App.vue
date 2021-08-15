@@ -5,7 +5,10 @@
     :nextId="nextId"
     @useId="nextId++"
     @item-action="toggleCompletion"
-  />
+  >
+    <styled-button @click="archiveSelected">Archive Selected</styled-button>
+    <styled-button @click="completeSelected">Complete Selected</styled-button>
+  </list>
   <styled-button class="archive-tab" @click="archiveOpen=true">Archive</styled-button>
   <div class="archive-overlay" v-if="archiveOpen">
     <h1>Archive</h1>
@@ -14,7 +17,9 @@
       :items="archiveList"
       :nextId="nextId"
       @useId="nextId++"
+      @item-action="unarchive"
     >
+    <styled-button @click="unarchiveSelected">Unarchive Selected</styled-button>
     </list>
   </div>
 </template>
@@ -66,6 +71,43 @@ export default {
     toggleCompletion(index) {
       const item = this.mainList[index];
       item.completed = !item.completed;
+    },
+    archive(index) {
+      const item = this.mainList.splice(index, 1)[0];
+      this.archiveList.splice(index, 0, item);
+    },
+    unarchive(index) {
+      const item = this.archiveList.splice(index, 1)[0];
+      this.mainList.push(item);
+    },
+    archiveSelected() {
+      for (let i = 0; i < this.mainList.length; i++) {
+        const item = this.mainList[i];
+        if (item.selected) {
+          item.selected = false;
+          item.completed = false;
+          this.archive(i);
+          i--; nb
+        }
+      }
+    },
+    completeSelected() {
+      for (const item of this.mainList) {
+        if (item.selected) {
+          item.completed = true;
+          item.selected = false;
+        }
+      }
+    },
+    unarchiveSelected() {
+      for (let i = 0; i < this.archiveList.length; i++) {
+        const item = this.archiveList[i];
+        if (item.selected) {
+          item.selected = false;
+          this.unarchive(i);
+          i--;
+        }
+      }
     }
   }
 }
