@@ -4,7 +4,7 @@
     <toggle-button v-model="selecting">Select</toggle-button>
     <styled-button @click="insertOrFocusItem(items.length)">Add Item</styled-button>
   </div>
-  <div class="actionStrip" v-show="selecting">
+  <div class="actionStrip invert" v-show="selecting">
     <styled-button @click="selectAll">Select All</styled-button>
     <styled-button @click="removeSelected">Remove Selected</styled-button>
     <slot></slot>
@@ -140,9 +140,15 @@ export default {
 
 /* ACTION STRIP */
 .actionStrip {
+  display: flex;
+  flex-flow: row wrap;
   margin: 1em 0;
+  gap: 0.5em;
 }
-.actionStrip > *:not(:last-child) {
-  margin-right: 0.5em;
+
+.actionStrip.invert {
+  padding: 1em;
+  border-radius: 1em;
+  background-color: var(--accent-color);
 }
 </style>
