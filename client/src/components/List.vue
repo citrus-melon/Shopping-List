@@ -7,7 +7,7 @@
   <div class="actionStrip invert" v-show="selecting">
     <span class="selected-count">{{ selectedCount }} Items Selected</span>
     <styled-button @click="selectAll">Select All</styled-button>
-    <styled-button @click="removeSelected">Remove Selected</styled-button>
+    <styled-button @click="removeSelected">Remove</styled-button>
     <slot></slot>
   </div>
   <ol class="list">

@@ -6,8 +6,8 @@
     @useId="nextId++"
     @item-action="toggleCompletion"
   >
-    <styled-button @click="archiveSelected">Archive Selected</styled-button>
-    <styled-button @click="completeSelected">Complete Selected</styled-button>
+    <styled-button @click="archiveSelected">Move to Archive</styled-button>
+    <styled-button @click="completeSelected">Complete</styled-button>
   </list>
   <styled-button class="archive-tab" @click="archiveOpen=true">Archive</styled-button>
   <div class="archive-overlay" v-if="archiveOpen">
@@ -19,7 +19,7 @@
       @useId="nextId++"
       @item-action="unarchive"
     >
-    <styled-button @click="unarchiveSelected">Unarchive Selected</styled-button>
+    <styled-button @click="unarchiveSelected">Move to List</styled-button>
     </list>
   </div>
 </template>
