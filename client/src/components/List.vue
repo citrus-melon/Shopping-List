@@ -5,6 +5,7 @@
     <styled-button @click="insertOrFocusItem(items.length)">Add Item</styled-button>
   </div>
   <div class="actionStrip invert" v-show="selecting">
+    <span class="selected-count">{{ selectedCount }} Items Selected</span>
     <styled-button @click="selectAll">Select All</styled-button>
     <styled-button @click="removeSelected">Remove Selected</styled-button>
     <slot></slot>
@@ -42,6 +43,15 @@ export default {
       editing:false,
       selecting: false,
       itemRefs: {}
+    }
+  },
+  computed: {
+    selectedCount() {
+      let count = 0;
+      for (const item of this.items) {
+        if (item.selected) count++;
+      }
+      return count;
     }
   },
   methods: {
@@ -150,5 +160,10 @@ export default {
   padding: 1em;
   border-radius: 1em;
   background-color: var(--accent-color);
+}
+
+.actionStrip .selected-count {
+  color: var(--space-color);
+  padding: 0.5em 0;
 }
 </style>
