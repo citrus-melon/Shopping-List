@@ -1,10 +1,12 @@
 <template>
   <styled-button class="archive-tab" @click="open=true">Archive</styled-button>
-  <div class="archive-overlay" v-if="open">
-    <h1>Archive</h1>
-    <styled-button class="archive-close" @click="open=false">Close</styled-button>
-    <slot></slot>
-  </div>
+  <transition name="slide">
+    <div class="archive-overlay" v-if="open">
+      <h1>Archive</h1>
+      <styled-button class="archive-close" @click="open=false">Close</styled-button>
+      <slot></slot>
+    </div>
+  </transition>
 </template>
 
 <script>
@@ -32,6 +34,15 @@ export default {
 
     padding: 1em;
     border-radius: 2em 2em 0 0;
+  }
+
+  .slide-enter-active,
+  .slide-leave-active {
+    transition: transform 0.3s ease;
+  }
+  .slide-enter-from,
+  .slide-leave-to {
+    transform: translateY(100%);
   }
 
   .archive-overlay h1 {
@@ -67,15 +78,15 @@ export default {
   .button.archive-tab {
     position: absolute;
     bottom: 0;
-    padding-bottom: 0.5em;
+    padding-bottom: 0.75em;
     border-radius: 1em 1em 0 0;
 
     background: var(--accent-color);
     color: var(--space-color);
 
-    transform: none;
+    transform: translateY(0.25em);
   }
   .button.archive-tab:hover {
-    transform: translateY(-10%) scale(1.1);
+    transform: none;
   }
 </style>
