@@ -2,8 +2,10 @@
   <styled-button class="archive-tab" @click="open=true">Archive</styled-button>
   <transition name="slide">
     <div class="archive-overlay" v-if="open">
-      <h1>Archive</h1>
-      <styled-button class="archive-close" @click="open=false">Close</styled-button>
+      <div class="archive-header">
+        <h1>Archive</h1>
+        <button class="material-icons-round archive-close" @click="open=false">close</button>
+      </div>
       <slot></slot>
     </div>
   </transition>
@@ -47,6 +49,21 @@ export default {
 
   .archive-overlay h1 {
     color: var(--space-color);
+  }
+
+  .archive-close {
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+    border: none;
+    outline: none;
+    
+    background: none;
+    font-size: 36px;
+    color: var(--space-color);
+    
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
   }
 
   .archive-overlay .actionStrip.secondary {
