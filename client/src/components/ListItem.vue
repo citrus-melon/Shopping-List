@@ -1,5 +1,5 @@
 <template>
-  <li @click="toggleCompletion" :class="{completed: completed}" class="list-item">
+  <li class="list-item">
     <span
       ref="text"
       class="label"
@@ -22,13 +22,9 @@ const itemDelimiterGlobalRegex= /\r?\n|\r|,|\uFF0C/g;
 
 export default {
   name: "ListItem",
-  props: ["itemId", "label", "completed", "editing", "last"],
-  emits: ["update:label", "update:completed", "remove", "focusNext", "insertAfter"],
+  props: ["itemId", "label", "editing", "last"],
+  emits: ["update:label", "remove", "focusNext", "insertAfter"],
   methods: {
-    toggleCompletion(e) {
-      if (this.editing) return;
-      this.$emit("update:completed", !this.completed);
-    },
     onInput(e) {
       if (itemDelimiterRegex.test(e.target.innerText)) {
         e.target.innerText = e.target.innerText.replace(itemDelimiterGlobalRegex, '');
@@ -110,14 +106,21 @@ export default {
 
 <style>
 /*LIST ITEM*/
- .list-item {
+.list-item {
   display: inline;
   white-space: pre-wrap;
   overflow-wrap: break-word;
 }
+.list-item .label {
+    border-radius: 0.3em;
+}
 .list-item.completed .label {
   text-decoration: line-through;
   opacity: 50%;
+}
+.list-item.selected .label {
+  background: var(--accent-color);
+  color: var(--space-color);
 }
 .list-item .label:focus {
   outline: none;
@@ -127,6 +130,5 @@ export default {
   color: var(--accent-color);
   background-color: var(--space-color);
   box-shadow: var(--shadow-color) 0 3px 6px;
-  border-radius: 0.3em;
 }
 </style>

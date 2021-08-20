@@ -1,18 +1,26 @@
 <template>
   <div class="actionStrip">
     <toggle-button v-model="editing" @click="editBtnClick">Edit</toggle-button>
+    <toggle-button v-model="selecting">Select</toggle-button>
     <styled-button @click="insertOrFocusItem(items.length)">Add Item</styled-button>
+  </div>
+  <div class="actionStrip secondary" v-show="selecting">
+    <span class="selected-count">{{ selectedCount }} Items Selected</span>
+    <styled-button @click="selectAll">Select All</styled-button>
+    <styled-button @click="removeSelected">Remove</styled-button>
+    <slot></slot>
   </div>
   <ol class="list">
     <list-item
       v-for="(item, index) in items"
       v-model:label="item.label"
-      v-model:completed="item.completed"
       v-bind:key="item.id"
       v-bind:item-id="item.id"
       v-bind:last="index == items.length - 1"
       v-bind:editing="editing"
+      :class="{completed: item.completed, selected: item.selected}"
       :ref="setItemRef"
+      @click="itemAction(index)"
       @remove="removeItem(index)"
       @focus-next="insertOrFocusItem(index + 1)"
       @insert-after="insertAndFocusItem(index + 1)"
@@ -29,11 +37,21 @@ export default {
   name: 'List',
   components: {ListItem, StyledButton, ToggleButton},
   props: ['items', 'nextId'],
-  emits: ['update:items', 'useId'],
+  emits: ['update:items', 'itemAction', 'useId'],
   data() {
     return {
       editing:false,
+      selecting: false,
       itemRefs: {}
+    }
+  },
+  computed: {
+    selectedCount() {
+      let count = 0;
+      for (const item of this.items) {
+        if (item.selected) count++;
+      }
+      return count;
     }
   },
   methods: {
@@ -64,6 +82,29 @@ export default {
         this.focusItem(this.items[index].id);
       }
     },
+    selectAll() {
+      for (const item of this.items) {
+        item.selected = true;
+      }
+    },
+    removeSelected() {
+      for (let i = 0; i < this.items.length; i++) {
+        const item = this.items[i];
+        if (item.selected) {
+          this.removeItem(i);
+          i--;
+        }
+      }
+    },
+    toggleSelectItem (index) {
+      const item = this.items[index];
+      item.selected = !item.selected;
+    },
+    itemAction (index) {
+      if (this.editing) return;
+      else if (this.selecting) this.toggleSelectItem(index);
+      else this.$emit('itemAction', index);
+    },
     editBtnClick () {
       if(!this.editing) this.insertOrFocusItem(0);
     },
@@ -82,6 +123,13 @@ export default {
         this.$emit("update:items", newValue);
       },
       deep: true
+    },
+    editing(value) { if (value) this.selecting = false },
+    selecting(value) {
+       if (value) this.editing = false;
+       for (const item of this.items) {
+         item.selected = false;
+       }
     }
   }
 };
@@ -102,9 +150,20 @@ export default {
 
 /* ACTION STRIP */
 .actionStrip {
+  display: flex;
+  flex-flow: row wrap;
   margin: 1em 0;
+  gap: 0.5em;
 }
-.actionStrip > *:not(:last-child) {
-  margin-right: 0.5em;
+
+.actionStrip.secondary {
+  padding: 1em;
+  border-radius: 1em;
+  background-color: var(--accent-color);
+}
+
+.actionStrip .selected-count {
+  color: var(--space-color);
+  padding: 0.5em 0;
 }
 </style>

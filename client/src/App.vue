@@ -4,26 +4,48 @@
     v-model:items="mainList"
     :nextId="nextId"
     @useId="nextId++"
-  />
+    @item-action="toggleCompletion"
+  >
+    <styled-button @click="archiveSelected">Move to Archive</styled-button>
+    <styled-button @click="completeSelected">Complete</styled-button>
+  </list>
+  <archive-wrapper>
+    <list
+      :items="archiveList"
+      :nextId="nextId"
+      @useId="nextId++"
+      @item-action="unarchive"
+    >
+      <styled-button @click="unarchiveSelected">Move to List</styled-button>
+    </list>
+  </archive-wrapper>
 </template>
 
 <script>
+import ArchiveWrapper from './components/ArchiveWrapper.vue';
 import List from './components/List.vue'
+import StyledButton from './components/StyledButton.vue';
 
 export default {
   name: 'App',
   components: {
-    List
+    ArchiveWrapper,
+    List,
+    StyledButton
   },
   data() {
     return {
       mainList: [],
-      nextId: 0
+      archiveList: [],
+      nextId: 0,
+      archiveOpen: false
     }
   },
   created() {
     const storedMainList = localStorage.getItem('mainList');
     if (storedMainList) this.mainList = JSON.parse(storedMainList);
+    const storedArchiveList = localStorage.getItem('archiveList');
+    if (storedArchiveList) this.archiveList = JSON.parse(storedArchiveList);
     const storedNextId = localStorage.getItem('nextId');
     if (storedNextId) this.nextId = JSON.parse(storedNextId);
   },
@@ -34,8 +56,57 @@ export default {
       },
       deep: true
     },
+    archiveList: {
+      handler(newValue) {
+        localStorage.setItem('archiveList', JSON.stringify(newValue));
+      },
+      deep: true
+    },
     nextId(newValue) {
       localStorage.setItem('nextId', newValue);
+    }
+  },
+  methods: {
+    toggleCompletion(index) {
+      const item = this.mainList[index];
+      item.completed = !item.completed;
+    },
+    archive(index) {
+      const item = this.mainList.splice(index, 1)[0];
+      this.archiveList.splice(index, 0, item);
+    },
+    unarchive(index) {
+      const item = this.archiveList.splice(index, 1)[0];
+      this.mainList.push(item);
+    },
+    archiveSelected() {
+      for (let i = 0; i < this.mainList.length; i++) {
+        const item = this.mainList[i];
+        if (item.selected) {
+          item.selected = false;
+          item.completed = false;
+          this.archive(i);
+          i--; nb
+        }
+      }
+    },
+    completeSelected() {
+      for (const item of this.mainList) {
+        if (item.selected) {
+          item.completed = true;
+          item.selected = false;
+        }
+      }
+    },
+    unarchiveSelected() {
+      for (let i = 0; i < this.archiveList.length; i++) {
+        const item = this.archiveList[i];
+        if (item.selected) {
+          item.selected = false;
+          this.unarchive(i);
+          i--;
+        }
+      }
     }
   }
 }
@@ -51,6 +122,7 @@ export default {
 body, html {
   width: 100%;
   height: 100%;
+  overflow: hidden;
 }
 
 /* APP CONTAINER */
@@ -59,7 +131,7 @@ body, html {
 
   width: 100%;
   height: 100%;
-  overflow: auto;
+  overflow: hidden;
   padding: 1em;
 
   color: var(--text-color);
@@ -69,6 +141,8 @@ body, html {
   --text-color: #221466;
   --bkg-color: #f8f6ff;
   --accent-color: #5947b3;
+  --lighter-accent-color: #6b5bbe;
+  --darker-accent-color: #4c3d99;
   --space-color: #fff;
   --shadow-color: #22146633;
 }
