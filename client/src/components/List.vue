@@ -4,7 +4,7 @@
     <toggle-button v-model="selecting">Select</toggle-button>
     <styled-button @click="insertOrFocusItem(items.length)">Add Item</styled-button>
   </div>
-  <div class="actionStrip invert" v-show="selecting">
+  <div class="actionStrip secondary" v-show="selecting">
     <span class="selected-count">{{ selectedCount }} Items Selected</span>
     <styled-button @click="selectAll">Select All</styled-button>
     <styled-button @click="removeSelected">Remove</styled-button>
@@ -156,7 +156,7 @@ export default {
   gap: 0.5em;
 }
 
-.actionStrip.invert {
+.actionStrip.secondary {
   padding: 1em;
   border-radius: 1em;
   background-color: var(--accent-color);
