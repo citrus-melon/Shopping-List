@@ -4,20 +4,17 @@
     v-model:items="mainList"
     :nextId="nextId"
     @useId="nextId++"
-    @item-action="toggleCompletion"
-  >
-    <styled-button @click="archiveSelected">Move to Archive</styled-button>
-    <styled-button @click="completeSelected">Complete</styled-button>
-  </list>
+    @item-action="mainListAction"
+    :selectionActions="['Move to Archive', 'Toggle Completion']"
+  ></list>
   <archive-wrapper>
     <list
       :items="archiveList"
       :nextId="nextId"
       @useId="nextId++"
-      @item-action="unarchive"
-    >
-      <styled-button @click="unarchiveSelected">Move to List</styled-button>
-    </list>
+      @item-action="archiveListAction"
+      :selectionActions="['Move to List']"
+    ></list>
   </archive-wrapper>
 </template>
 
@@ -79,34 +76,15 @@ export default {
       const item = this.archiveList.splice(index, 1)[0];
       this.mainList.push(item);
     },
-    archiveSelected() {
-      for (let i = 0; i < this.mainList.length; i++) {
-        const item = this.mainList[i];
-        if (item.selected) {
-          item.selected = false;
-          item.completed = false;
-          this.archive(i);
-          i--; nb
-        }
+    mainListAction(action, item, index) {
+      if (action === 'Move to Archive') {
+        this.archive(index);
+      } else {
+        this.toggleCompletion(index);
       }
     },
-    completeSelected() {
-      for (const item of this.mainList) {
-        if (item.selected) {
-          item.completed = true;
-          item.selected = false;
-        }
-      }
-    },
-    unarchiveSelected() {
-      for (let i = 0; i < this.archiveList.length; i++) {
-        const item = this.archiveList[i];
-        if (item.selected) {
-          item.selected = false;
-          this.unarchive(i);
-          i--;
-        }
-      }
+    archiveListAction(action, item, index) {
+      this.unarchive(index);
     }
   }
 }

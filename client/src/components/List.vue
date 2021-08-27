@@ -7,8 +7,10 @@
   <div class="actionStrip secondary" v-show="selecting">
     <span class="selected-count">{{ selectedCount }} Items Selected</span>
     <styled-button @click="selectAll">Select All</styled-button>
-    <styled-button @click="removeSelected">Remove</styled-button>
-    <slot></slot>
+    <styled-button @click="forSelected(removeItem)">Remove</styled-button>
+    <styled-button v-for="action in selectionActions" @click="emitAction(action)" :key="action">
+      {{ action }}
+    </styled-button>
   </div>
   <ol class="list">
     <list-item
@@ -20,7 +22,7 @@
       v-bind:editing="editing"
       :class="{completed: item.completed, selected: item.selected}"
       :ref="setItemRef"
-      @click="itemAction(index)"
+      @click="itemClick(index)"
       @remove="removeItem(index)"
       @focus-next="insertOrFocusItem(index + 1)"
       @insert-after="insertAndFocusItem(index + 1)"
@@ -36,7 +38,7 @@ import ToggleButton from './ToggleButton.vue';
 export default {
   name: 'List',
   components: {ListItem, StyledButton, ToggleButton},
-  props: ['items', 'nextId'],
+  props: ['items', 'nextId', 'selectionActions'],
   emits: ['update:items', 'itemAction', 'useId'],
   data() {
     return {
@@ -82,28 +84,33 @@ export default {
         this.focusItem(this.items[index].id);
       }
     },
+    forSelection(action) {
+      for (let i = this.items.length -1; i >= 0; i--) {
+        const item = this.items[i];
+        if (item.selected) {
+          item.selected = false;
+          action(item, i);
+        }
+      }
+    },
+    emitAction(action) {
+      this.forSelection((item, index) => {
+        this.$emit('itemAction', action, item, index);
+      })
+    },
     selectAll() {
       for (const item of this.items) {
         item.selected = true;
-      }
-    },
-    removeSelected() {
-      for (let i = 0; i < this.items.length; i++) {
-        const item = this.items[i];
-        if (item.selected) {
-          this.removeItem(i);
-          i--;
-        }
       }
     },
     toggleSelectItem (index) {
       const item = this.items[index];
       item.selected = !item.selected;
     },
-    itemAction (index) {
+    itemClick (index) {
       if (this.editing) return;
       else if (this.selecting) this.toggleSelectItem(index);
-      else this.$emit('itemAction', index);
+      else this.$emit('itemAction', 'default', this.items[index], index);
     },
     editBtnClick () {
       if(!this.editing) this.insertOrFocusItem(0);
