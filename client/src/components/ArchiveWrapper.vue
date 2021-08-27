@@ -70,11 +70,11 @@ export default {
     background-color: var(--darker-accent-color);
   }
 
-  .archive-overlay .selected .label {
+  .archive-overlay .list-item.selected .label {
     background: var(--space-color);
     color: var(--accent-color);
   }
-  .archive-overlay .label:focus {
+  .archive-overlay .list-item .label:focus {
     background: var(--lighter-accent-color);
     color: var(--space-color);
   }
