@@ -1,14 +1,14 @@
 <template>
   <div class="actionStrip">
-    <toggle-button v-model="editing" @click="editBtnClick">Edit</toggle-button>
-    <toggle-button v-model="selecting">Select</toggle-button>
-    <styled-button @click="insertOrFocusItem(items.length)">Add Item</styled-button>
+    <toggle-button v-model="editing" @click="editBtnClick" :variant="buttonVariant">Edit</toggle-button>
+    <toggle-button v-model="selecting" :variant="buttonVariant">Select</toggle-button>
+    <styled-button @click="insertOrFocusItem(items.length)" :variant="buttonVariant">Add Item</styled-button>
   </div>
-  <div class="actionStrip secondary" v-show="selecting">
+  <div class="actionStrip secondary" :class="{ inverted }" v-show="selecting">
     <span class="selected-count">{{ selectedCount }} Items Selected</span>
-    <styled-button @click="selectAll">Select All</styled-button>
-    <styled-button @click="forSelected(removeItem)">Remove</styled-button>
-    <styled-button v-for="action in selectionActions" @click="emitAction(action)" :key="action">
+    <styled-button @click="selectAll" :variant="buttonVariant">Select All</styled-button>
+    <styled-button @click="forSelected(removeItem)" :variant="buttonVariant">Remove</styled-button>
+    <styled-button v-for="action in selectionActions" @click="emitAction(action)" :key="action" :variant="buttonVariant">
       {{ action }}
     </styled-button>
   </div>
@@ -20,6 +20,7 @@
       v-bind:item-id="item.id"
       v-bind:last="index == items.length - 1"
       v-bind:editing="editing"
+      v-bind:inverted="inverted"
       :class="{completed: item.completed, selected: item.selected}"
       :ref="setItemRef"
       @click="itemClick(index)"
@@ -38,7 +39,7 @@ import ToggleButton from './ToggleButton.vue';
 export default {
   name: 'List',
   components: {ListItem, StyledButton, ToggleButton},
-  props: ['items', 'nextId', 'selectionActions'],
+  props: ['items', 'nextId', 'selectionActions', 'inverted'],
   emits: ['update:items', 'itemAction', 'useId'],
   data() {
     return {
@@ -54,7 +55,8 @@ export default {
         if (item.selected) count++;
       }
       return count;
-    }
+    },
+    buttonVariant() { return this.inverted ? 'colored-light' : 'uncolored' }
   },
   methods: {
     removeItem (index) {
@@ -167,6 +169,9 @@ export default {
   padding: 1em;
   border-radius: 1em;
   background-color: var(--accent-color);
+}
+.actionStrip.secondary.inverted {
+  background-color: var(--darker-accent-color);
 }
 
 .actionStrip .selected-count {

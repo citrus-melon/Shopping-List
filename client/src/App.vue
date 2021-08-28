@@ -14,6 +14,7 @@
       @useId="nextId++"
       @item-action="archiveListAction"
       :selectionActions="['Move to List']"
+      :inverted="true"
     ></list>
   </archive-wrapper>
 </template>

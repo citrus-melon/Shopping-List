@@ -1,10 +1,17 @@
 <template>
-  <button class="button"><slot>Button</slot></button>
+  <button class="button" :class="[variant]"><slot>Button</slot></button>
 </template>
 
 <script>
 export default {
-  name: 'StyledButton'
+  name: 'StyledButton',
+  props: {
+    variant: {
+      type: String,
+      default: 'uncolored',
+      validator: value => value === 'colored-light' || value === 'uncolored'
+    }
+  }
 }
 </script>
 
@@ -19,8 +26,6 @@ export default {
   font-size: 1em;
 
   padding: 0.5em 1em;
-  color: var(--accent-color);
-  background-color: var(--space-color);
   box-shadow: var(--shadow-color) 0 3px 6px;
   border-radius: 9999px;
   transition: transform 0.3s, background-color 0.3s, color 0.3s;
@@ -31,8 +36,21 @@ export default {
   transform: translateZ(0) scale(1.1);
 }
 
-.button:active {
+.button.uncolored {
+  color: var(--accent-color);
+  background-color: var(--space-color);
+}
+.button.uncolored:active {
   color: var(--space-color);
   background-color: var(--accent-color);
+}
+
+.button.colored-light {
+  background-color: var(--lighter-accent-color);
+  color: var(--space-color);
+}
+.button.colored-light:active {
+  color: var(--accent-color);
+  background-color: var(--space-color);
 }
 </style>

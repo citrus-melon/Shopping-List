@@ -1,5 +1,5 @@
 <template>
-  <li class="list-item">
+  <li class="list-item" :class="{ inverted }">
     <span
       ref="text"
       class="label"
@@ -22,7 +22,7 @@ const itemDelimiterGlobalRegex= /\r?\n|\r|,|\uFF0C/g;
 
 export default {
   name: "ListItem",
-  props: ["itemId", "label", "editing", "last"],
+  props: ["itemId", "label", "editing", "last", "inverted"],
   emits: ["update:label", "remove", "focusNext", "insertAfter"],
   methods: {
     onInput(e) {
@@ -118,17 +118,28 @@ export default {
   text-decoration: line-through;
   opacity: 50%;
 }
-.list-item.selected .label {
-  background: var(--accent-color);
-  color: var(--space-color);
-}
 .list-item .label:focus {
   outline: none;
   text-decoration: unset;
   opacity: unset;
-
-  color: var(--accent-color);
-  background-color: var(--space-color);
   box-shadow: var(--shadow-color) 0 3px 6px;
 }
+
+.list-item .label:focus {
+  color: var(--accent-color);
+  background-color: var(--space-color);
+}
+.list-item.selected .label {
+  background: var(--accent-color);
+  color: var(--space-color);
+}
+
+.list-item.inverted.selected .label {
+  background: var(--space-color);
+  color: var(--accent-color);
+}
+.list-item.inverted .label:focus {
+  background: var(--lighter-accent-color);
+  color: var(--space-color);
+} 
 </style>

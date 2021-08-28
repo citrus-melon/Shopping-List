@@ -66,32 +66,6 @@ export default {
     right: 1rem;
   }
 
-  .archive-overlay .actionStrip.secondary {
-    background-color: var(--darker-accent-color);
-  }
-
-  .archive-overlay .list-item.selected .label {
-    background: var(--space-color);
-    color: var(--accent-color);
-  }
-  .archive-overlay .list-item .label:focus {
-    background: var(--lighter-accent-color);
-    color: var(--space-color);
-  }
-
-  .archive-overlay .button {
-    background-color: var(--lighter-accent-color);
-    color: var(--space-color);
-  }
-  .archive-overlay .button:active {
-    color: var(--accent-color);
-    background-color: var(--space-color);
-  }
-  .archive-overlay .hidden-checkbox:checked + label {
-    color: var(--accent-color);
-    background-color: var(--space-color);
-  }
-
   .button.archive-tab {
     position: absolute;
     bottom: 0;
