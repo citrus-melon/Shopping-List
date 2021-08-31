@@ -1,12 +1,14 @@
 <template>
-  <h1>Shopping List</h1>
-  <list
-    v-model:items="mainList"
-    :nextId="nextId"
-    @useId="nextId++"
-    @item-action="mainListAction"
-    :selectionActions="['Move to Archive', 'Toggle Completion']"
-  ></list>
+  <div class="main-list-wrapper">
+    <h1>Shopping List</h1>
+    <list
+      v-model:items="mainList"
+      :nextId="nextId"
+      @useId="nextId++"
+      @item-action="mainListAction"
+      :selectionActions="['Move to Archive', 'Toggle Completion']"
+    ></list>
+  </div>
   <archive-wrapper>
     <list
       :items="archiveList"
@@ -111,7 +113,6 @@ body, html {
   width: 100%;
   height: 100%;
   overflow: hidden;
-  padding: 1em;
 
   color: var(--text-color);
   background-color: var(--bkg-color);
@@ -126,7 +127,13 @@ body, html {
   --shadow-color: #22146633;
 }
 
-/* BIG TITLE */
+/* MAIN LIST */
+.main-list-wrapper {
+  height: 100%;
+  padding: 1em;
+  overflow: auto;
+}
+
 h1 {
   color: var(--accent-color);
 }

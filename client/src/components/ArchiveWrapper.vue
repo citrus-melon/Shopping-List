@@ -36,6 +36,7 @@ export default {
 
     padding: 1em;
     border-radius: 2em 2em 0 0;
+    overflow: auto;
   }
 
   .slide-enter-active,
