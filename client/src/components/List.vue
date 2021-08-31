@@ -7,7 +7,7 @@
   <div class="actionStrip secondary" :class="{ inverted }" v-show="selecting">
     <span class="selected-count">{{ selectedCount }} Items Selected</span>
     <styled-button @click="selectAll" :variant="buttonVariant">Select All</styled-button>
-    <styled-button @click="forSelected(removeItem)" :variant="buttonVariant">Remove</styled-button>
+    <styled-button @click="forSelection(removeItem)" :variant="buttonVariant">Remove</styled-button>
     <styled-button v-for="action in selectionActions" @click="emitAction(action)" :key="action" :variant="buttonVariant">
       {{ action }}
     </styled-button>
@@ -91,12 +91,12 @@ export default {
         const item = this.items[i];
         if (item.selected) {
           item.selected = false;
-          action(item, i);
+          action(i, item);
         }
       }
     },
     emitAction(action) {
-      this.forSelection((item, index) => {
+      this.forSelection((index, item) => {
         this.$emit('itemAction', action, item, index);
       })
     },
