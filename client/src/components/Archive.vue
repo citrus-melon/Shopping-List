@@ -71,6 +71,7 @@ export default {
 
   .button.archive-tab {
     position: absolute;
+    left: 1em;
     bottom: 0;
     padding-bottom: 0.75em;
     border-radius: 1em 1em 0 0;
