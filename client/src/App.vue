@@ -7,29 +7,26 @@
       @useId="nextId++"
       @item-action="mainListAction"
       :selectionActions="['Move to Archive', 'Toggle Completion']"
-    ></list>
+    />
   </div>
-  <archive-wrapper>
-    <list
-      :items="archiveList"
-      :nextId="nextId"
-      @useId="nextId++"
-      @item-action="archiveListAction"
-      :selectionActions="['Move to List']"
-      :inverted="true"
-    ></list>
-  </archive-wrapper>
+  <archive
+    :items="archiveList"
+    :nextId="nextId"
+    @useId="nextId++"
+    @item-action="archiveListAction"
+    :selectionActions="['Move to List']"
+  />
 </template>
 
 <script>
-import ArchiveWrapper from './components/ArchiveWrapper.vue';
+import Archive from './components/Archive.vue';
 import List from './components/List.vue'
 import StyledButton from './components/StyledButton.vue';
 
 export default {
   name: 'App',
   components: {
-    ArchiveWrapper,
+    Archive,
     List,
     StyledButton
   },

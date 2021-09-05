@@ -6,17 +6,19 @@
         <h1>Archive</h1>
         <button class="material-icons-round archive-close" @click="open=false">close</button>
       </div>
-      <slot></slot>
+      <list v-bind="$attrs" :inverted="true"/>
     </div>
   </transition>
 </template>
 
 <script>
+import List from './List.vue'
 import StyledButton from './StyledButton.vue'
 
 export default {
-  name: 'ArchiveWrapper',
-  components: { StyledButton },
+  name: 'Archive',
+  components: { StyledButton, List },
+  inheritAttrs: false,
   data() {
     return { open: false }
   }
