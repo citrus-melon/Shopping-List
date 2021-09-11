@@ -49,13 +49,13 @@ export default {
   watch: {
     mainList: {
       handler(newValue) {
-        localStorage.setItem('mainList', JSON.stringify(newValue));
+        localStorage.setItem('mainList', this.stringifyList(newValue));
       },
       deep: true
     },
     archiveList: {
       handler(newValue) {
-        localStorage.setItem('archiveList', JSON.stringify(newValue));
+        localStorage.setItem('archiveList', this.stringifyList(newValue));
       },
       deep: true
     },
@@ -64,6 +64,13 @@ export default {
     }
   },
   methods: {
+    stringifyList(input) {
+      const output = [];
+      for (const item of input) {
+        output.push({ id: item.id, label: item.label, completed: item.completed })
+      }
+      return JSON.stringify(output);
+    },
     toggleCompletion(index) {
       const item = this.mainList[index];
       item.completed = !item.completed;
