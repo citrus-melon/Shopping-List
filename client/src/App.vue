@@ -71,6 +71,7 @@ export default {
     archive(index) {
       const item = this.mainList.splice(index, 1)[0];
       this.archiveList.splice(index, 0, item);
+      item.completed = false;
     },
     unarchive(index) {
       const item = this.archiveList.splice(index, 1)[0];
