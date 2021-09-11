@@ -67,6 +67,7 @@ export default {
     stringifyList(input) {
       const output = [];
       for (const item of input) {
+        if (item.label === '') continue;
         output.push({ id: item.id, label: item.label, completed: item.completed })
       }
       return JSON.stringify(output);
