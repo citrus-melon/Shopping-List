@@ -32,10 +32,11 @@ export default {
       }
     },
     onBlur(e) {
-      if (e.target.innerText == "") {
+      const trimmedLabel = e.target.innerText.trim();
+      if (trimmedLabel === '') {
         this.$emit("remove");
       } else {
-        this.$emit("update:label", e.target.innerText);
+        this.$emit("update:label", trimmedLabel);
       }
     },
     onPaste(e) {
