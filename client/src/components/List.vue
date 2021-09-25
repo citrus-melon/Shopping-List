@@ -26,7 +26,7 @@
       @click="itemClick(index)"
       @remove="removeItem(index)"
       @focus-next="insertOrFocusItem(index + 1)"
-      @insert-after="insertAndFocusItem(index + 1)"
+      @insert-items="insertAndFocusItem(index + 1, $event)"
     ></list-item>
   </ol>
 </template>
@@ -68,16 +68,20 @@ export default {
         this.itemRefs[id].focus();
       });
     },
-    insertItem (index, label) {
-      if (!label) label = '';
-      const item = {id: this.nextId, label: label};
-      this.items.splice(index, 0, item);
-      this.$emit('useId');
-      return item;
+    insertItems (index, labels) {
+      if (!labels) labels = [''];
+      if (!Array.isArray(labels)) labels = [ labels ];
+      const items = [];
+      for (const label of labels) {
+        items.push({id: this.nextId, label: label});
+        this.$emit("useId");
+      }
+      this.items.splice(index, 0, ...items);
+      return items;
     },
-    insertAndFocusItem (index, label) {
-      const item = this.insertItem(index, label);
-      this.focusItem(item.id);
+    insertAndFocusItem (index, labels) {
+      const items = this.insertItems(index, labels);
+      this.focusItem(items[items.length-1].id);
     },
     insertOrFocusItem (index) {
       if (this.items[index] === undefined) {

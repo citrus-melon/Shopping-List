@@ -5,12 +5,9 @@
       class="label"
       :contenteditable="contenteditable"
       @input="onInput"
-      @keydown.tab.exact.prevent="focusNextItem"
-      @keydown.enter.prevent="insertItemAfter"
-      @keydown.,.prevent="insertItemAfter"
+      @keydown.tab.exact.prevent="$emit('focusNext')"
       @focus="androidCaretFix"
       @blur="onBlur"
-      @paste.prevent="onPaste"
     >{{ label }}</span>
     <span v-if="!last">, </span>
   </li>
@@ -18,18 +15,21 @@
 
 <script>
 const itemDelimiterRegex = /\r?\n|\r|,|\uFF0C/;
-const itemDelimiterGlobalRegex= /\r?\n|\r|,|\uFF0C/g;
 
 export default {
   name: "ListItem",
   props: ["itemId", "label", "editing", "last", "inverted"],
-  emits: ["update:label", "remove", "focusNext", "insertAfter"],
+  emits: ["update:label", "remove", "focusNext", "insertItems"],
   methods: {
     onInput(e) {
-      if (itemDelimiterRegex.test(e.target.innerText)) {
-        e.target.innerText = e.target.innerText.replace(itemDelimiterGlobalRegex, '');
-        this.focusNextItem();
-      }
+      let items = e.target.innerText.split(itemDelimiterRegex);
+      if (items.length <= 1) return;
+
+      e.target.innerText = items.shift();
+
+      items = items.map(item => item.trim())
+      items = items.filter((item, index) => item !== '' || index == items.length - 1);
+      this.$emit('insertItems', items);
     },
     onBlur(e) {
       const trimmedLabel = e.target.innerText.trim();
@@ -38,40 +38,6 @@ export default {
       } else {
         this.$emit("update:label", trimmedLabel);
       }
-    },
-    onPaste(e) {
-      // Get the copied text from the clipboard
-      let text = e.clipboardData
-        ? (e.originalEvent || e).clipboardData.getData("text/plain")
-        : // For IE
-        window.clipboardData
-        ? window.clipboardData.getData("Text")
-        : "";
-      
-      text = text.replace(itemDelimiterGlobalRegex, ' ');
-
-      if (document.queryCommandSupported("insertText")) {
-        document.execCommand("insertText", false, text);
-      } else {
-        // Insert text at the current position of caret
-        const range = document.getSelection().getRangeAt(0);
-        range.deleteContents();
-
-        const textNode = document.createTextNode(text);
-        range.insertNode(textNode);
-        range.selectNodeContents(textNode);
-        range.collapse(false);
-
-        const selection = window.getSelection();
-        selection.removeAllRanges();
-        selection.addRange(range);
-      }
-    },
-    focusNextItem() {
-      this.$emit("focusNext");
-    },
-    insertItemAfter() {
-      this.$emit("insertAfter");
     },
     androidCaretFix(e) {
       const selection = window.getSelection();
