@@ -15,11 +15,13 @@
 
 <script>
 const itemDelimiterRegex = /\r?\n|\r|,|\uFF0C/;
+import androidCaretFix from '../mixins/androidCaretFix';
 
 export default {
   name: "ListItem",
   props: ["itemId", "label", "editing", "last", "inverted"],
   emits: ["update:label", "remove", "focusNext", "insertItems"],
+  mixins: [ androidCaretFix ],
   methods: {
     onInput(e) {
       let items = e.target.innerText.split(itemDelimiterRegex);
@@ -38,24 +40,6 @@ export default {
       } else {
         this.$emit("update:label", trimmedLabel);
       }
-    },
-    androidCaretFix(e) {
-      const selection = window.getSelection();
-      const selectionRange = new Range();
-
-      const originalContent = e.target.textContent;
-
-      // Clear the content and select in the empty element
-      e.target.textContent = '';
-      selectionRange.selectNodeContents(e.target);
-      selection.removeAllRanges();
-      selection.addRange(selectionRange);
-      
-      // Re-insert the content and set the cursor at the end
-      const textNode = document.createTextNode(originalContent);
-      selectionRange.insertNode(textNode);
-      selectionRange.selectNodeContents(textNode);
-      selectionRange.collapse(false);
     },
     focus() {
       this.$nextTick(() => {
