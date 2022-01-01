@@ -3,5 +3,5 @@
         "target": "es6",
         "checkJs": true
     },
-    "exclude": ["client", "node_modules"]
+    "exclude": ["node_modules"]
 }
