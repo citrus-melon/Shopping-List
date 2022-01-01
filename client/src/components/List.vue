@@ -1,17 +1,17 @@
 <template>
-  <div class="actionStrip">
+  <action-strip :inverted="inverted">
     <toggle-button v-model="editing" @click="editBtnClick" :variant="buttonVariant">Edit</toggle-button>
     <toggle-button v-model="selecting" :variant="buttonVariant">Select</toggle-button>
     <styled-button @click="insertOrFocusItem(items.length)" :variant="buttonVariant">Add Item</styled-button>
-  </div>
-  <div class="actionStrip secondary" :class="{ inverted }" v-show="selecting">
+  </action-strip>
+  <action-strip :inverted="inverted" :secondary="true" v-show="selecting">
     <span class="selected-count">{{ selectedCount }} Items Selected</span>
     <styled-button @click="selectAll" :variant="buttonVariant">Select All</styled-button>
     <styled-button @click="forSelection(removeItem)" :variant="buttonVariant">Remove</styled-button>
     <styled-button v-for="action in selectionActions" @click="emitAction(action)" :key="action" :variant="buttonVariant">
       {{ action }}
     </styled-button>
-  </div>
+  </action-strip>
   <ol class="list">
     <list-item
       v-for="(item, index) in items"
@@ -32,13 +32,14 @@
 </template>
 
 <script>
+import ActionStrip from './ActionStrip.vue';
 import ListItem from './ListItem.vue';
 import StyledButton from './StyledButton.vue';
 import ToggleButton from './ToggleButton.vue';
 
 export default {
   name: 'List',
-  components: {ListItem, StyledButton, ToggleButton},
+  components: {ListItem, StyledButton, ToggleButton, ActionStrip},
   props: ['items', 'nextId', 'selectionActions', 'inverted'],
   emits: ['update:items', 'itemAction', 'useIds'],
   data() {
@@ -160,27 +161,5 @@ export default {
 .list:empty::after {
   content: 'Press edit to add an item!';
   opacity: 50%;
-}
-
-/* ACTION STRIP */
-.actionStrip {
-  display: flex;
-  flex-flow: row wrap;
-  margin: 1em 0;
-  gap: 0.5em;
-}
-
-.actionStrip.secondary {
-  padding: 1em;
-  border-radius: 1em;
-  background-color: var(--accent-color);
-}
-.actionStrip.secondary.inverted {
-  background-color: var(--darker-accent-color);
-}
-
-.actionStrip .selected-count {
-  color: var(--space-color);
-  padding: 0.5em 0;
 }
 </style>
