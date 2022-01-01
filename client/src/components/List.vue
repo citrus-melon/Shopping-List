@@ -40,7 +40,7 @@ export default {
   name: 'List',
   components: {ListItem, StyledButton, ToggleButton},
   props: ['items', 'nextId', 'selectionActions', 'inverted'],
-  emits: ['update:items', 'itemAction', 'useId'],
+  emits: ['update:items', 'itemAction', 'useIds'],
   data() {
     return {
       editing:false,
@@ -71,12 +71,13 @@ export default {
     insertItems (index, labels) {
       if (!labels) labels = [''];
       if (!Array.isArray(labels)) labels = [ labels ];
+      let nextId = this.nextId;
       const items = [];
       for (const label of labels) {
-        items.push({id: this.nextId, label: label});
-        this.$emit("useId");
+        items.push({id: nextId++, label: label});
       }
       this.items.splice(index, 0, ...items);
+      this.$emit("useIds", items.length);
       return items;
     },
     insertAndFocusItem (index, labels) {

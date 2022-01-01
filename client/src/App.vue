@@ -4,7 +4,7 @@
     <list
       v-model:items="mainList"
       :nextId="nextId"
-      @useId="nextId++"
+      @useIds="nextId += $event"
       @item-action="mainListAction"
       :selectionActions="['Move to Archive', 'Toggle Completion']"
     />
@@ -12,7 +12,7 @@
   <archive
     :items="archiveList"
     :nextId="nextId"
-    @useId="nextId++"
+    @useIds="nextId += $event"
     @item-action="archiveListAction"
     :selectionActions="['Move to List']"
   />
