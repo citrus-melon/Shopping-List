@@ -6,7 +6,8 @@
     "configurations": [
         {
             "name": "Launch Server",
-            "program": "server/index.js",
+            "program": "index.js",
+            "localRoot": "${workspaceFolder}/server",
             "request": "launch",
             "skipFiles": [
                 "<node_internals>/**"
